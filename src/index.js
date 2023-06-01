@@ -122,7 +122,9 @@ app.get("/checkauth",async(req,res)=>{
             if(!user){
                 return res.send({success:false,message:"user not found"}) 
             }
-            return res.send({success:true,name:user.name})
+            // console.log(new Date(user.updatedAt).getTime())
+            return res.send({success:true,name:user.name,
+            email:user.email})
 
         }
 
