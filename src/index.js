@@ -113,15 +113,17 @@ app.get("/checkauth",async(req,res)=>{
     if(!token){
         return res.send({success:false})
     }
-    console.log("hello")
+    // console.log("hello")
     try{
         const data=jwt.verify(token.replace("Bearer ",""),process.env.TOKEN)
         console.log(data)
         if(data.email){
-            const user=await User.findOne({email:data.email})
+            const user=await User.findOne({email:data.email,'tokens.token':token.replace("Bearer ","")})
             if(!user){
                 return res.send({success:false,message:"user not found"}) 
             }
+            console.log(user)
+            // console.log(user.createdAt)
             // console.log(new Date(user.updatedAt).getTime())
             return res.send({success:true,name:user.name,
             email:user.email})

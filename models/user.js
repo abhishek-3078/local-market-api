@@ -4,14 +4,11 @@ import mongoose from "mongoose"
 const tokenSchema = new mongoose.Schema({
     token: {
       type: String,
-      required: true,
-      index: { unique: true },
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      expires: '1m', // Token will expire after 1 hour
-    },
+      required: true
+    }
+  },
+  {
+    timestamps:true
   });
 const userSchema=new mongoose.Schema({
     name:{
@@ -44,6 +41,7 @@ const userSchema=new mongoose.Schema({
         type:String
       }}
     ]
+    // tokens:[tokenSchema]
 },{
   timestamps:true
 })
