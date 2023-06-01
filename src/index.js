@@ -164,6 +164,6 @@ app.get("/check",async (req,res)=>{
     // console.log(req.query)
     // res.send("done")
 })
-app.listen(3000,()=>{
+app.listen(port,()=>{
     console.log("server is up on Port ",port)
 })
