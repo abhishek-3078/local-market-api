@@ -1,15 +1,6 @@
 import mongoose from "mongoose"
 
 
-const tokenSchema = new mongoose.Schema({
-    token: {
-      type: String,
-      required: true
-    }
-  },
-  {
-    timestamps:true
-  });
 const userSchema=new mongoose.Schema({
     name:{
         type:String,
@@ -38,14 +29,31 @@ const userSchema=new mongoose.Schema({
     },
     tokens:[{
       token:{
-        type:String
-      }}
+        type:String,
+
+      },
+      expiresAt: {
+        type: Date,
+        default: () => {
+          // Set a default expiration time, such as 1 hour from the current time
+          const expiration = new Date();
+          expiration.setHours(expiration.getHours() + 1);
+          return expiration;
+        }
+      }
+    }
     ]
-    // tokens:[tokenSchema]
 },{
   timestamps:true
 })
 
+
+userSchema.pre('save', async function (next) {
+  const currentTime = new Date();
+  console.log("before saving")
+  this.tokens = this.tokens.filter(token => token.expiresAt > currentTime);
+  next();
+});
 const User=mongoose.model('User',userSchema)
 
 
