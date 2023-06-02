@@ -8,8 +8,8 @@ import dotenv from "dotenv"
 const port =process.env.PORT||3000
 const app=express()
 app.use(cors({
-    origin:process.env.URL,
-    credentials:true
+    origin:"*",
+    // credentials:true
 })) 
 dotenv.config()
 
@@ -39,7 +39,6 @@ app.get("/",(req,res)=>{
 })
 app.post('/login',async(req,res)=>{
     const user=await User.findOne({email:req.body.email});
-    console.log(user)
     if(!user){  
         return res.send({success:false})
     }
@@ -75,7 +74,8 @@ app.post('/register',async (req,res)=>{
     message:"registered"})
     }
     catch(e){ 
-        console.log(e)
+        console.log(e.message)
+        res.send({success:false,message:e.message})
     }
 })
 
